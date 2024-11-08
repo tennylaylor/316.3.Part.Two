@@ -34,7 +34,32 @@ const topMenuEl = document.getElementById('top-menu');
 topMenuEl.style.height = '100%';
 topMenuEl.style.backgroundColor = 'var(--top-menu-bg)';
 topMenuEl.classList.add('flex-around');
+//=======================================================
+const subMenuEl =document.getElementById('sub-menu'); 
+subMenuEl.style.height = '100%';
+subMenuEl.style.backgroundColor= 'var(--sub-menu-bg)';
+subMenuEl.classList.add ('flex-around');
+//====================================================
 
+menuLinks.forEach(link=>{
+  const linkElement= document.createElement ('a');
+  linkElement.href =link.href;
+  linkElement.textContent =link.text;
+  topMenuEl.appendChild(linkElement);
+});
+function buildSubmenu(subLinks){
+  subMenuEl.innerHTML ='';
+
+  subLinks.forEach(subLink => {
+    const subLinkEl = document.createElement('a');
+    subLinkEl.href = subLink.href;
+    subLinkEl.textContent = subLink.text;
+    subMenuEl.appendChild(subLinkEl);
+  });
+}
+
+
+//=======================================================
 
 const topMenuLinks = topMenuEl.querySelectorAll('a');
 
@@ -44,26 +69,29 @@ topMenuEl.addEventListener('click', function(evt) {
   console.log(evt.target.textContent);
 
   //==================================================
-  topMenuLinks.forEach(link => {  //go through each list one at time and remove active
+  //topMenuLinks.forEach(link => {  //go through each list one at time and remove active
+   //     ^^^^^^^^^///                                      //
+  document.querySelectorAll('#top-menu a').forEach(link => {
     link.classList.remove('active');
   });
   if (!evt.target.classList.contains('active')) {
     evt.target.classList.add('active');
   } else {
     evt.target.classList.remove('active');
+    subMenuEl.styles.top =0;
+    return;
   }
-});
+
 
 //===========================================================
 
-
-const subMenuEl =document.getElementById('sub-menu'); 
-subMenuEl.style.height = '100%';
-subMenuEl.style.backgroundColor= 'var(--sub-menu-bg)';
-subMenuEl.classList.add ('flex-around');
-
- 
-
-
+const clickedLink = menuLinks.find(link => link.text === evt.target.textContent );
+if (clikedLink && clickedLink.subLinks){
+  subMenuEl.style.top = '100%';
+  buildSubmenu(clickedLink.subLinks);
+  } else {
+    subMenuEl.style.top = '0';
+  }
+});
 
   
